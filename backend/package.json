@@ -1,0 +1,25 @@
+{
+  "name": "3704-campus-event-finder",
+  "version": "1.0.0",
+  "description": "hi",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+  "start": "node index",
+  "dev": "nodemon index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@code.vt.edu:isabellevu/3704-campus-event-finder.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

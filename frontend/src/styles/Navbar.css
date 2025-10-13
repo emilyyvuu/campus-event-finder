@@ -1,15 +1,17 @@
 .navbar {
   background-color: #630031; 
-  padding: 15px 40px;
+  padding: 20px 40px;
   display: flex;
   align-items: center;
-  height: 40px;
+  justify-content: space-between;
+  height: 70px;
   width: 100%;
   position: fixed; 
   top: 0; 
   left: 0;
   z-index: 100;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
 }
 
 .navbar-title {
@@ -34,14 +36,20 @@
   display: block;
 }
 
+.nav-buttons {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
 .nav-button {
   color: white;
   border: none;
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  margin-left: 50px;
   transition: all 0.3s ease;
+  text-decoration: none;
 }
 
 .nav-button:hover {
@@ -59,7 +67,7 @@
   font-weight: bold;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-left: 930px;
+  text-decoration: none;
 }
 
 .login-button:hover {

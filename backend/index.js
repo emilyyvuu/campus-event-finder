@@ -11,6 +11,13 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
+// Universal request logger middleware
+app.use((req, res, next) => {
+  console.log(`--- Incoming Request: ${req.method} ${req.path} ---`);
+  next();
+});
+
+
 // Define allowed origins
 const allowedOrigins = [
   "http://localhost:5173", // your React dev URL

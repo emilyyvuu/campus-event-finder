@@ -19,16 +19,25 @@ function setAuthCookie(res, token) {
 
 // REGISTER
 router.post('/register', async (req, res) => {
+  console.log('--- Register endpoint hit ---');
   try {
     const { username, email, password } = req.body;
-    if (!username || !email || !password)
+    if (!username || !email || !password) {
+      console.log('Validation failed: Missing fields.');
       return res.status(400).json({ message: 'All fields are required.' });
+    }
 
+    console.log('Checking for existing user...');
     const existing = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-    if (existing.rows.length > 0)
+    if (existing.rows.length > 0) {
+      console.log('User already exists.');
       return res.status(409).json({ message: 'Email already registered.' });
+    }
 
+    console.log('Hashing password...');
     const hashed = await bcrypt.hash(password, 10);
+
+    console.log('Inserting new user into database...');
     const result = await pool.query(
       `INSERT INTO users (username, email, password_hash)
        VALUES ($1, $2, $3)
@@ -37,16 +46,24 @@ router.post('/register', async (req, res) => {
     );
 
     const newUser = result.rows[0];
+    console.log('New user created:', newUser);
+
+    console.log('Signing JWT...');
     const token = jwt.sign(
       { id: newUser.id, email: newUser.email, username: newUser.username },
       JWT_SECRET,
       { expiresIn: '1h' }
     );
 
+    console.log('Setting auth cookie...');
     setAuthCookie(res, token);
+
+    console.log('Sending final JSON response...');
     res.status(201).json({ message: 'Account created successfully', user: newUser });
+    console.log('--- Response sent ---');
+
   } catch (err) {
-    console.error('Error creating account:', err);
+    console.error('!!! CRITICAL ERROR in /register route !!!:', err);
     res.status(500).json({ message: 'Server error during registration.' });
   }
 });

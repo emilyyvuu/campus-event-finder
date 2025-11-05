@@ -19,15 +19,17 @@ const EventForm = ({ eventToEdit, onCancel }) => {
 
   useEffect(() => {
     if (eventToEdit) {
+      // Convert "YYYY-MM-DD HH:MM:SS" → "YYYY-MM-DDTHH:MM" for datetime-local
+      const formatForInput = (value) => {
+        if (!value) return "";
+        return value.replace(" ", "T").slice(0, 16);
+      };
+
       setFormData({
         title: eventToEdit.title || "",
         description: eventToEdit.description || "",
-        start_time: eventToEdit.start_time 
-          ? new Date(eventToEdit.start_time).toISOString().slice(0, 16)
-          : "",
-        end_time: eventToEdit.end_time
-          ? new Date(eventToEdit.end_time).toISOString().slice(0, 16)
-          : "",
+        start_time: formatForInput(eventToEdit.start_time),
+        end_time: formatForInput(eventToEdit.end_time),
         location: eventToEdit.location || "",
         category: eventToEdit.category || "",
         image_url: eventToEdit.image_url || "",
@@ -45,10 +47,10 @@ const EventForm = ({ eventToEdit, onCancel }) => {
     e.preventDefault();
     setLoading(true);
     setError("");
-    
+
     try {
       const eventData = { ...formData };
-      
+
       if (eventToEdit) {
         // Update existing event
         const response = await updateEvent(eventToEdit.id, eventData);
@@ -79,7 +81,7 @@ const EventForm = ({ eventToEdit, onCancel }) => {
   return (
     <form onSubmit={handleSubmit} className="event-form">
       {error && <div className="error-message">{error}</div>}
-      
+
       <label>
         Title
         <input
@@ -149,9 +151,18 @@ const EventForm = ({ eventToEdit, onCancel }) => {
       </label>
       <div className="form-buttons">
         <button type="submit" disabled={loading}>
-          {loading ? "Saving..." : eventToEdit ? "Update Event" : "Create Event"}
+          {loading
+            ? "Saving..."
+            : eventToEdit
+            ? "Update Event"
+            : "Create Event"}
         </button>
-        <button type="button" onClick={handleCancel} disabled={loading} className="btn-cancel">
+        <button
+          type="button"
+          onClick={handleCancel}
+          disabled={loading}
+          className="btn-cancel"
+        >
           Cancel
         </button>
       </div>

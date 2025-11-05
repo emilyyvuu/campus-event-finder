@@ -23,13 +23,13 @@ export default function EditEventPage() {
     (async () => {
       try {
         const eventData = await getEvent(id);
-        
+
         // Check if user is the owner
         if (eventData.created_by_user_id !== user.id) {
           setError("You can only edit your own events.");
           return;
         }
-        
+
         setEvent(eventData);
       } catch (err) {
         setError("Event not found");
@@ -48,7 +48,7 @@ export default function EditEventPage() {
       <Navbar />
       <div className="page-shell">
         <div className="event-content">
-          <h1>Edit Event</h1>
+          <h1 className="title">Edit Event</h1>
           {loading ? (
             <p>Loading...</p>
           ) : error ? (
